@@ -7,7 +7,7 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.doReturn
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
@@ -17,7 +17,7 @@ class ControllerTest{
     lateinit var crawlerController: CrawlerController
 
     @Mock
-    lateinit var crawlerService: CrawlerService
+    lateinit var crawlerService: BasicCrawlerService
 
     @Test
     @Ignore

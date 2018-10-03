@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController
 class CrawlerController {
 
     @Autowired
-    lateinit var crawlerService: CrawlerService
+    lateinit var basicCrawlerService: BasicCrawlerService
 
     @GetMapping("/crawl")
     fun crawl(@RequestParam("site") site: String): Any? {
         var crawlInformation = CrawlInformation()
         runBlocking {
-            val links = async { crawlerService.getAllLinks(site) }
-            val media = async { crawlerService.getAllMedia(site) }
+            val links = async { basicCrawlerService.getAllLinks(site) }
+            val media = async { basicCrawlerService.getAllMedia(site) }
 
             crawlInformation = CrawlInformation(links.await(), media.await())
         }

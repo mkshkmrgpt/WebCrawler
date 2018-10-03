@@ -10,14 +10,19 @@ class CrawlerServiceTest {
 
     @Test
     fun whenCalledShouldReturnAllLinks() {
-        var links: List<Link>? = CrawlerService().getAllLinks(link)
+        var links: List<Link>? = BasicCrawlerService().getAllLinks(link)
         assertTrue(links?.isNotEmpty()!!)
     }
 
     @Test
     fun whenCalledShouldReturnAllMediaFiles() {
-        var media: List<Media> = CrawlerService().getAllMedia(link)
+        var media: List<Media> = BasicCrawlerService().getAllMedia(link)
         assertTrue(media?.isNotEmpty()!!)
+    }
+
+    @Test(expected = CrawlerException::class)
+    fun whenSiteIsNotReachableShouldThrowException(){
+        BasicCrawlerService().getAllLinks("")
     }
 
     @Test
