@@ -2,6 +2,7 @@ package com.mukesh.webcrawler
 
 import junit.framework.Assert.assertTrue
 import org.jsoup.Jsoup
+import org.jsoup.select.Elements
 import org.junit.Test
 
 class CrawlerServiceTest {
@@ -10,31 +11,17 @@ class CrawlerServiceTest {
 
     @Test
     fun whenCalledShouldReturnAllLinks() {
-        val connection = Jsoup.connect(link)
-        val document = connection.get()
-        if (connection.response().statusCode() == 200) {
-            val links = document.select("a[href]")
-            links.forEach {
-                println("Page ${it.text()} Links ${it.attr("abs:href")}")
-            }
-            assertTrue(links.isNotEmpty())
-        }
+        var links: Elements? = CrawlerService().getAllLinks(link)
+        assertTrue(links?.isNotEmpty()!!)
     }
 
     @Test
     fun whenCalledShouldReturnAllMediaFiles() {
-        val connection = Jsoup.connect(link)
-        val document = connection.get()
-        if (connection.response().statusCode() == 200) {
-            val media = document.select("[src]")
-            media.forEach {
-                if (it.tagName() == "img") {
-                    println("Media ${it.attr("alt")} Links ${it.attr("abs:src")}")
-                }
-            }
-            assertTrue(media.isNotEmpty())
-        }
+        var media: Elements? = CrawlerService().getAllMedia(link)
+        assertTrue(media?.isNotEmpty()!!)
     }
+
+
 
     @Test
     fun whenCalledShuldReturnAllImports() {
