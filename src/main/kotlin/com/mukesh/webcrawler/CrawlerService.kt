@@ -6,31 +6,32 @@ import org.jsoup.select.Elements
 class CrawlerService {
 
     fun getAllLinks(link: String): Elements? {
-        val connection = Jsoup.connect(link)
-        val document = connection.get()
-        var links: Elements? = null
-        if (connection.response().statusCode() == 200) {
-            links = document.select("a[href]")
-            links.forEach {
-                println("Page ${it.text()} Links ${it.attr("abs:href")}")
-            }
+        val documentSelector = "a[href]"
+        var links: Elements? = getElements(link, documentSelector)
+        links?.forEach {
+            println("Page ${it.text()} Links ${it.attr("abs:href")}")
         }
         return links
     }
 
-
     fun getAllMedia(link: String): Elements? {
-        val connection = Jsoup.connect(link)
-        val document = connection.get()
-        var media: Elements? = null
-        if (connection.response().statusCode() == 200) {
-            media = document.select("[src]")
-            media.forEach {
-                if (it.tagName() == "img") {
-                    println("Media ${it.attr("alt")} Links ${it.attr("abs:src")}")
-                }
+        val documentSelector = "[src]"
+        var media: Elements? = getElements(link, documentSelector)
+        media?.forEach {
+            if (it.tagName() == "img") {
+                println("Media ${it.attr("alt")} Links ${it.attr("abs:src")}")
             }
         }
         return media
+    }
+
+    private fun getElements(link: String, documentSelector: String): Elements? {
+        val connection = Jsoup.connect(link)
+        val document = connection.get()
+        var elements: Elements? = null
+        if (connection.response().statusCode() == 200) {
+            elements = document.select(documentSelector)
+        }
+        return elements
     }
 }

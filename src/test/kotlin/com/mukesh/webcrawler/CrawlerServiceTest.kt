@@ -7,7 +7,7 @@ import org.junit.Test
 
 class CrawlerServiceTest {
 
-    val link = "https://www.prudential.co.uk/"
+    private val link = "https://www.prudential.co.uk/"
 
     @Test
     fun whenCalledShouldReturnAllLinks() {
@@ -20,8 +20,6 @@ class CrawlerServiceTest {
         var media: Elements? = CrawlerService().getAllMedia(link)
         assertTrue(media?.isNotEmpty()!!)
     }
-
-
 
     @Test
     fun whenCalledShuldReturnAllImports() {
