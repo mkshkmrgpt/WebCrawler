@@ -19,3 +19,16 @@ Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/
 ```shell
 mvn spring-boot:run
 ```
+
+## Trade offs
+
+- List all the links on given site and does not visit sub-domain links
+
+- List all only the Images media types
+ 
+- Does not lists any imports links
+
+## TODO Improvement 
+
+- Links available on site could be arranged more elegantly by following site depth
+- Asynchronous calls could be used to visit all inner links
