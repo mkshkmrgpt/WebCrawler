@@ -53,6 +53,11 @@
             <artifactId>jsoup</artifactId>
             <version>1.11.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>0.27.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -73,6 +78,7 @@
                     <compilerPlugins>
                         <plugin>spring</plugin>
                     </compilerPlugins>
+                    <experimentalCoroutines>enable</experimentalCoroutines>
                 </configuration>
                 <dependencies>
                     <dependency>
