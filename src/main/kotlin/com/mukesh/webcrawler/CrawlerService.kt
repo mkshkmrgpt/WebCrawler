@@ -5,24 +5,30 @@ import org.jsoup.select.Elements
 
 class CrawlerService {
 
-    fun getAllLinks(link: String): Elements? {
+    fun getAllLinks(link: String): MutableList<Link> {
         val documentSelector = "a[href]"
-        var links: Elements? = getElements(link, documentSelector)
-        links?.forEach {
-            println("Page ${it.text()} Links ${it.attr("abs:href")}")
+        var elements: Elements? = getElements(link, documentSelector)
+        var links:MutableList<Link> = mutableListOf()
+        elements?.forEach {
+            val link = Link(it.text(), it.attr("abs:href"))
+            links.add(link)
+            println(link)
         }
         return links
     }
 
-    fun getAllMedia(link: String): Elements? {
+    fun getAllMedia(link: String): MutableList<Media> {
         val documentSelector = "[src]"
-        var media: Elements? = getElements(link, documentSelector)
-        media?.forEach {
+        var elements: Elements? = getElements(link, documentSelector)
+        var mediaList = mutableListOf<Media>()
+        elements?.forEach {
             if (it.tagName() == "img") {
-                println("Media ${it.attr("alt")} Links ${it.attr("abs:src")}")
+                val media = Media(it.absUrl("alt"), it.attr("abs:src"))
+                mediaList.add(media)
+                println(media)
             }
         }
-        return media
+        return mediaList
     }
 
     private fun getElements(link: String, documentSelector: String): Elements? {

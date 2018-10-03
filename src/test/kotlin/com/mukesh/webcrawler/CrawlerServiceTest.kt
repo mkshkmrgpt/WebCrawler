@@ -2,7 +2,6 @@ package com.mukesh.webcrawler
 
 import junit.framework.Assert.assertTrue
 import org.jsoup.Jsoup
-import org.jsoup.select.Elements
 import org.junit.Test
 
 class CrawlerServiceTest {
@@ -11,13 +10,13 @@ class CrawlerServiceTest {
 
     @Test
     fun whenCalledShouldReturnAllLinks() {
-        var links: Elements? = CrawlerService().getAllLinks(link)
+        var links: List<Link>? = CrawlerService().getAllLinks(link)
         assertTrue(links?.isNotEmpty()!!)
     }
 
     @Test
     fun whenCalledShouldReturnAllMediaFiles() {
-        var media: Elements? = CrawlerService().getAllMedia(link)
+        var media: List<Media> = CrawlerService().getAllMedia(link)
         assertTrue(media?.isNotEmpty()!!)
     }
 
