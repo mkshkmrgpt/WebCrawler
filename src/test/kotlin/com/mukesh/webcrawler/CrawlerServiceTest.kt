@@ -29,7 +29,7 @@ class CrawlerServiceTest {
             val media = document.select("[src]")
             media.forEach {
                 if (it.tagName() == "img") {
-                    println("Media ${it.text()} Links ${it.attr("abs:src")}")
+                    println("Media ${it.attr("alt")} Links ${it.attr("abs:src")}")
                 }
             }
             assertTrue(media.isNotEmpty())
@@ -37,7 +37,15 @@ class CrawlerServiceTest {
     }
 
     @Test
-    fun whenCalledShuldReturnAllSrces() {
-
+    fun whenCalledShuldReturnAllImports() {
+        val connection = Jsoup.connect(link)
+        val document = connection.get()
+        if (connection.response().statusCode() == 200) {
+            val imports = document.select("link[href]")
+            imports.forEach {
+                println("${it.attr("rel")} Link ${it.attr("abs:href")}")
+            }
+            assertTrue(imports.isNotEmpty())
+        }
     }
 }
