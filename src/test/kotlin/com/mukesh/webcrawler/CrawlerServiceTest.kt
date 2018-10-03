@@ -6,27 +6,38 @@ import org.junit.Test
 
 class CrawlerServiceTest {
 
-    val link = "http://www.google.com"
+    val link = "https://www.prudential.co.uk/"
 
     @Test
-    fun whenCalledShouldReturnAllLinks(){
-        var connection = Jsoup.connect(link)
-        var document = connection.get()
-        if(connection.response().statusCode() == 200){
-            var links = document.select("a[href]")
+    fun whenCalledShouldReturnAllLinks() {
+        val connection = Jsoup.connect(link)
+        val document = connection.get()
+        if (connection.response().statusCode() == 200) {
+            val links = document.select("a[href]")
             links.forEach {
-                println("Page ${it.text()} Links ${it.attr("abs:href")}") }
+                println("Page ${it.text()} Links ${it.attr("abs:href")}")
+            }
             assertTrue(links.isNotEmpty())
         }
     }
 
     @Test
-    fun whenCalledShouldReturnAllMediaFiles(){
-
+    fun whenCalledShouldReturnAllMediaFiles() {
+        val connection = Jsoup.connect(link)
+        val document = connection.get()
+        if (connection.response().statusCode() == 200) {
+            val media = document.select("[src]")
+            media.forEach {
+                if (it.tagName() == "img") {
+                    println("Media ${it.text()} Links ${it.attr("abs:src")}")
+                }
+            }
+            assertTrue(media.isNotEmpty())
+        }
     }
 
     @Test
-    fun whenCalledShuldReturnAllSrces(){
+    fun whenCalledShuldReturnAllSrces() {
 
     }
 }
