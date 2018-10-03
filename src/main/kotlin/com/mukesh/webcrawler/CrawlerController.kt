@@ -3,6 +3,7 @@ package com.mukesh.webcrawler
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -13,7 +14,7 @@ class CrawlerController {
     @Autowired
     lateinit var basicCrawlerService: BasicCrawlerService
 
-    @GetMapping("/crawl")
+    @GetMapping("/crawl", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun crawl(@RequestParam("site") site: String): Any? {
         var crawlInformation = CrawlInformation()
         runBlocking {

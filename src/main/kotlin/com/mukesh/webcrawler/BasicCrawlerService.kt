@@ -45,7 +45,7 @@ class BasicCrawlerService : LinkCrawler, MediaCrawler{
         return mediaList
     }
 
-    internal fun getElements(link: String, documentSelector: String): Elements? {
+    fun getElements(link: String, documentSelector: String): Elements? {
         var elements: Elements? = null
         try {
             val connection = Jsoup.connect(link)
