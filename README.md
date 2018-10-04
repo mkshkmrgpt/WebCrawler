@@ -19,7 +19,11 @@ Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/
 ```shell
 mvn spring-boot:run
 ```
+To crawl your website use this location 
 
+```
+http://localhost:8080/crawl?site=<SITE_NAME>
+```
 ## Trade offs
 
 - List all the links on given site and does not visit sub-domain links
