@@ -1,5 +1,6 @@
-package com.mukesh.webcrawler
+package com.mukesh.webcrawler.exception
 
+import com.mukesh.webcrawler.data.ApiError
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
