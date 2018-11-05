@@ -7,20 +7,28 @@ import com.mukesh.webcrawler.service.LinkCrawler
 import com.mukesh.webcrawler.service.MediaCrawler
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
-import org.springframework.beans.factory.annotation.Value
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.util.concurrent.LinkedBlockingQueue
 
 @Service
 class CrawlerServiceFacade : LinkCrawler, MediaCrawler {
 
+    @Autowired
+    @Qualifier("basicLink")
+    lateinit var linkCrawler: LinkCrawler
+
+    @Autowired
+    @Qualifier("basicMedia")
+    lateinit var mediaCrawler: MediaCrawler
 
     override fun getAllLinks(site: String): Link {
-        return BasicLinkCrawler().getAllLinks(site) //To change body of created functions use File | Settings | File Templates.
+        return linkCrawler.getAllLinks(site) //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getAllMedia(site: String): Media {
-        return BasicMediaCrawler().getAllMedia(site)
+        return mediaCrawler.getAllMedia(site)
     }
 
 
