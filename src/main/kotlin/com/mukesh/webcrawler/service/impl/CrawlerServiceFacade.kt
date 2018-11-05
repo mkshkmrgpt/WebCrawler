@@ -32,43 +32,62 @@ class CrawlerServiceFacade : LinkCrawler, MediaCrawler {
     }
 
 
+    val allLinks = mutableListOf<Link>()
+    val allMedia = mutableListOf<Media>()
+
     fun crawlSite(site: String, depth: Int): CrawlInformation {
+
         var depth = depth
-        val blockingQueue = LinkedBlockingQueue<String>()
+
         val links = getAllLinks(site)
         val media = getAllMedia(site)
-
-        val allLinks = mutableListOf<Link>()
-        val allMedia = mutableListOf<Media>()
         allLinks.add(links)
         allMedia.add(media)
 
+        val blockingQueue = LinkedBlockingQueue<String>()
         blockingQueue.addAll(links.link.map { it }.toMutableList())
-
         val visitedLinks = mutableSetOf<String>()
         visitedLinks.add(site)
+
+        var depthCounter = 1
         while (depth > 1) {
-            var newLinksToCrawl = mutableListOf<String>()
+            val newLinksToCrawl = mutableListOf<String>()
             while (blockingQueue.isNotEmpty()) {
-                var crawlLink = site + blockingQueue.poll().substringAfter(site).split("/")[0]
+                val crawlLink = getNextLink(site, blockingQueue.poll(), depthCounter)
                 if (!visitedLinks.contains(crawlLink)) {
-                    crawUnvisitedLinks(crawlLink, site, visitedLinks, allLinks, allMedia, newLinksToCrawl)
+                    crawUnvisitedLinks(crawlLink, site, visitedLinks, newLinksToCrawl)
                 }
             }
             depth--
+            depthCounter++
             blockingQueue.addAll(newLinksToCrawl)
         }
         return CrawlInformation(allLinks, allMedia)
     }
 
+    private fun getNextLink(site: String, nextLink: String, depthCounter: Int): String {
+        val tokens = nextLink.substringAfter(site).split("/")
+        var i = 1
+        var newLink = ""
+        while (tokens.size > i && i <= depthCounter) {
+            newLink = "$newLink/${tokens[i++]}"
+        }
+        newLink = if (newLink.isBlank()) {
+            nextLink
+        } else {
+            site + newLink
+        }
+        return newLink
+    }
+
     private fun crawUnvisitedLinks(crawlLink: String, site: String, visitedLinks: MutableSet<String>,
-                                   result: MutableList<Link>, allMedia: MutableList<Media>, newLinksToCrawl: MutableList<String>) {
-        if (crawlLink.contains(site) && crawlLink.length < 100) {
+                                   newLinksToCrawl: MutableList<String>) {
+        if (crawlLink.startsWith(site) && crawlLink.length < 100) {
             visitedLinks.add(crawlLink)
             runBlocking {
                 async {
                     val innerPages = getAllLinks(crawlLink)
-                    result.add(innerPages)
+                    allLinks.add(innerPages)
                     newLinksToCrawl.addAll(innerPages.link
                             .toList().subList(0, 50))
                 }
